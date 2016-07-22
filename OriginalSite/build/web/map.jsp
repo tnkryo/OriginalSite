@@ -35,7 +35,7 @@
             </form>
             <div id="map" style="width: 1000px; height: 550px;"></div>
         <script>
-        //マウスオーバーで情報ウィンドウを表示させる
+        //マウスクリックで情報ウィンドウを表示させる
         function map_canvas() {
         //マーカーの情報
         var data = new Array();
@@ -65,12 +65,22 @@
             markerInfo(markers[i], data[i].content);
         }
     }
-
+    
     function markerInfo(marker, name) {
-        google.maps.event.addListener(marker, 'click', function (event) {
-            new google.maps.InfoWindow({
-                content: name
-            }).open(marker.getMap(), marker);
+        var isClick = true;
+        var infoWindows;
+        google.maps.event.addListener(marker, 'click', function () {
+            
+            if(isClick){
+                        isClick = false;
+                        infoWindows = new google.maps.InfoWindow({
+                        content: name
+                       });
+                        infoWindows.open(marker.getMap(), marker);
+                    }else{
+                        isClick = true;
+                        infoWindows.close();
+                    }
         });
     }
 
